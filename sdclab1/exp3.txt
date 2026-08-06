@@ -1,0 +1,229 @@
+Experiment 3
+
+CMD
+
+npx create-react-app inventory
+
+cd inventory
+
+code .
+
+Replace
+
+src\App.js
+
+------------------------------------
+Program 1 (Given in PDF)
+------------------------------------
+
+import React, { useState, useMemo } from "react";
+
+export default function App() {
+  const [products] = useState([
+    { name: "Pen", qty: 10, price: 20 },
+    { name: "Book", qty: 5, price: 100 }
+  ]);
+
+  const [search, setSearch] = useState("");
+  const [dark, setDark] = useState(false);
+
+  const totalValue = useMemo(() => {
+    return products.reduce(
+      (sum, item) => sum + item.qty * item.price,
+      0
+    );
+  }, [products]);
+
+  const filtered = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div
+      style={{
+        backgroundColor: dark ? "#222" : "#fff",
+        color: dark ? "#fff" : "#000",
+        minHeight: "100vh",
+        padding: "20px"
+      }}
+    >
+      <h2>Inventory Management</h2>
+
+      <button onClick={() => setDark(!dark)}>
+        Toggle Theme
+      </button>
+
+      <br /><br />
+
+      <input
+        type="text"
+        placeholder="Search Product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ul>
+        {filtered.map((p, index) => (
+          <li key={index}>
+            {p.name} - Qty: {p.qty} - ₹{p.price}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total Value: ₹{totalValue}</h3>
+    </div>
+  );
+}
+
+
+---------------------------------------------------
+
+as per syllabus
+
+
+
+
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  createContext,
+  useContext,
+} from "react";
+
+const ThemeContext = createContext();
+
+function Inventory() {
+  const { dark, setDark } = useContext(ThemeContext);
+
+  const [products, setProducts] = useState([
+    { name: "Pen", qty: 10, price: 20 },
+    { name: "Book", qty: 5, price: 100 },
+  ]);
+
+  const [name, setName] = useState("");
+  const [qty, setQty] = useState("");
+  const [price, setPrice] = useState("");
+  const [search, setSearch] = useState("");
+
+  const nameRef = useRef(null);
+
+  useEffect(() => {
+    nameRef.current.focus();
+  }, []);
+
+  const addProduct = () => {
+    if (!name || !qty || !price) {
+      alert("Enter all details");
+      return;
+    }
+
+    setProducts([
+      ...products,
+      {
+        name,
+        qty: Number(qty),
+        price: Number(price),
+      },
+    ]);
+
+    setName("");
+    setQty("");
+    setPrice("");
+
+    nameRef.current.focus();
+  };
+
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalValue = useMemo(() => {
+    return products.reduce(
+      (sum, item) => sum + item.qty * item.price,
+      0
+    );
+  }, [products]);
+
+  return (
+    <div
+      style={{
+        backgroundColor: dark ? "#222" : "#fff",
+        color: dark ? "#fff" : "#000",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      <h1>Inventory Management</h1>
+
+      <button onClick={() => setDark(!dark)}>
+        Toggle Theme
+      </button>
+
+      <hr />
+
+      <h3>Add Product</h3>
+
+      <input
+        ref={nameRef}
+        placeholder="Product Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <br /><br />
+
+      <input
+        type="number"
+        placeholder="Quantity"
+        value={qty}
+        onChange={(e) => setQty(e.target.value)}
+      />
+
+      <br /><br />
+
+      <input
+        type="number"
+        placeholder="Price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+
+      <br /><br />
+
+      <button onClick={addProduct}>
+        Add Product
+      </button>
+
+      <hr />
+
+      <input
+        type="text"
+        placeholder="Search Product"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ul>
+        {filteredProducts.map((p, index) => (
+          <li key={index}>
+            {p.name} - Qty: {p.qty} - ₹{p.price}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total Inventory Value: ₹{totalValue}</h3>
+    </div>
+  );
+}
+
+export default function App() {
+  const [dark, setDark] = useState(false);
+
+  return (
+    <ThemeContext.Provider value={{ dark, setDark }}>
+      <Inventory />
+    </ThemeContext.Provider>
+  );
+}
