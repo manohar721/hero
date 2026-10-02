@@ -1,0 +1,38 @@
+// Exp 3: Single Object Checkpoint (Element displayed and enabled)
+
+import javax.swing.*;
+
+public class Exp3_SingleObjectCheckpoint {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        JFrame frame = new JFrame("Single Object Checkpoint");
+
+        JTextField searchBox = new JTextField(20);
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Search:"));
+        panel.add(searchBox);
+
+        frame.add(panel);
+        frame.setSize(400, 150);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        Thread.sleep(500);
+
+        boolean displayed = searchBox.isShowing();
+        boolean enabled = searchBox.isEnabled();
+
+        System.out.println("Displayed: " + displayed);
+        System.out.println("Enabled : " + enabled);
+
+        System.out.println(displayed && enabled
+                ? "PASS: Search box is ready"
+                : "FAIL: Search box is not ready");
+
+        Thread.sleep(2000);
+        frame.dispose();
+    }
+}

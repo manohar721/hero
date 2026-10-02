@@ -1,0 +1,97 @@
+import java.util.logging.*;
+import java.io.IOException;
+
+public class SilentModeTest {
+
+    static Logger logger =
+        Logger.getLogger("SilentTestLogger");
+
+    static void setupLogger()
+            throws IOException {
+
+        logger.setUseParentHandlers(false);
+
+        FileHandler fh =
+            new FileHandler("silent_test_log.txt");
+
+        fh.setFormatter(
+            new SimpleFormatter());
+
+        logger.addHandler(fh);
+    }
+
+    static void testCase(
+            String name,
+            Object actual,
+            Object expected) {
+
+        try {
+
+            if (actual.equals(expected)) {
+
+                logger.info(
+                    name +
+                    ": PASS (actual=" +
+                    actual +
+                    ", expected=" +
+                    expected +
+                    ")");
+
+            } else {
+
+                logger.severe(
+                    name +
+                    ": FAIL (actual=" +
+                    actual +
+                    ", expected=" +
+                    expected +
+                    ")");
+            }
+
+        } catch (Exception e) {
+
+            logger.severe(
+                name +
+                ": ERROR - " +
+                e.getMessage());
+        }
+    }
+
+    public static void main(String[] args)
+            throws IOException {
+
+        setupLogger();
+
+        testCase(
+            "Addition Test",
+            2 + 2,
+            4
+        );
+
+        testCase(
+            "Subtraction Test",
+            10 - 5,
+            5
+        );
+
+        testCase(
+            "Multiplication Test",
+            3 * 3,
+            10
+        );
+
+        testCase(
+            "String Test",
+            "abc".toUpperCase(),
+            "ABC"
+        );
+
+        System.out.println(
+            "Batch execution completed silently. " +
+            "Check silent_test_log.txt for results.");
+    }
+}
+
+javac SilentModeTest.java
+ java SilentModeTest
+ type silent_test_log.txt

@@ -1,0 +1,60 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+
+public class CalculatorTest {
+
+    public static void main(String[] args)
+            throws Exception {
+
+        Runtime.getRuntime().exec("calc.exe");
+
+        Thread.sleep(2000);
+
+        Robot robot = new Robot();
+
+        robot.setAutoDelay(200);
+
+        typeKey(robot, KeyEvent.VK_7);
+        typeKey(robot, KeyEvent.VK_ADD);
+        typeKey(robot, KeyEvent.VK_5);
+        typeKey(robot, KeyEvent.VK_EQUALS);
+
+        Thread.sleep(1000);
+
+        Rectangle screenRect =
+            new Rectangle(
+                Toolkit.getDefaultToolkit()
+                    .getScreenSize()
+            );
+
+        BufferedImage capture =
+            robot.createScreenCapture(screenRect);
+
+        ImageIO.write(
+            capture,
+            "png",
+            new File("calculator_result.png")
+        );
+
+        System.out.println(
+            "Test executed: 7 + 5 =");
+
+        System.out.println(
+            "Screenshot saved as calculator_result.png -- " +
+            "compare visually to confirm result is 12");
+    }
+
+    static void typeKey(
+            Robot robot,
+            int keyCode) {
+
+        robot.keyPress(keyCode);
+        robot.keyRelease(keyCode);
+    }
+}
+
+javac CalculatorTest.java
+ java CalculatorTest

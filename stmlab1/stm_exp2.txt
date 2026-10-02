@@ -1,0 +1,31 @@
+// Exp 2: Single Property Checkpoint (Page Title)
+
+import javax.swing.JFrame;
+
+public class Exp2_SinglePropertyCheckpoint {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        JFrame frame = new JFrame("Google");
+
+        frame.setSize(400, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        String expectedTitle = "Google";
+        String actualTitle = frame.getTitle();
+
+        System.out.println("Actual Title : " + actualTitle);
+        System.out.println("Expected Title : " + expectedTitle);
+
+        if (actualTitle.equals(expectedTitle)) {
+            System.out.println("PASS: Title is correct");
+        } else {
+            System.out.println("FAIL: Title is incorrect");
+        }
+
+        Thread.sleep(2000);
+        frame.dispose();
+    }
+}
