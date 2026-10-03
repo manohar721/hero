@@ -1,0 +1,46 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+
+public class CalculatorTest {
+
+    public static void main(String[] args) throws Exception {
+
+        // Open Ubuntu Calculator
+        Runtime.getRuntime().exec("gnome-calculator");
+
+        Thread.sleep(3000);
+
+        Robot robot = new Robot();
+        robot.setAutoDelay(200);
+
+        // 7 + 5 =
+        typeKey(robot, KeyEvent.VK_7);
+        typeKey(robot, KeyEvent.VK_ADD);
+        typeKey(robot, KeyEvent.VK_5);
+        typeKey(robot, KeyEvent.VK_ENTER);
+
+        Thread.sleep(1000);
+
+        // Take screenshot
+        Rectangle screenRect =
+                new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+
+        BufferedImage capture =
+                robot.createScreenCapture(screenRect);
+
+        ImageIO.write(capture, "png",
+                new File("calculator_result.png"));
+
+        System.out.println("Test executed: 7 + 5 = 12");
+        System.out.println(
+                "Screenshot saved as calculator_result.png");
+    }
+
+    static void typeKey(Robot robot, int keyCode) {
+        robot.keyPress(keyCode);
+        robot.keyRelease(keyCode);
+    }
+}
